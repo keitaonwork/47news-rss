@@ -41,13 +41,23 @@ a:hover{
 
 """
 
+from email.utils import parsedate_to_datetime
+
 for item in items[:15]:
 
     title = item.findtext("title", "")
     link = item.findtext("link", "")
+    pub_date = item.findtext("pubDate", "")
+
+    try:
+        dt = parsedate_to_datetime(pub_date)
+        date_str = dt.strftime("%m/%d %H:%M")
+    except:
+        date_str = ""
 
     html += f"""
     <div class="news">
+      <span class="date">{date_str}</span>
       <a href="{link}" target="_blank">
         {title}
       </a>
