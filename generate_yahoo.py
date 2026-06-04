@@ -49,7 +49,7 @@ for item in items[:15]:
     link = item.findtext("link", "")
     pub_date = item.findtext("pubDate", "")
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 try:
     dt = parsedate_to_datetime(pub_date)
