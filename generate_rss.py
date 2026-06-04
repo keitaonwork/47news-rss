@@ -6,7 +6,11 @@ import xml.etree.ElementTree as ET
 
 URL = "https://www.47news.jp/bulletin"
 
-html = requests.get(URL, timeout=30).text
+response = requests.get(URL, timeout=30)
+
+response.encoding = response.apparent_encoding
+
+html = response.text
 soup = BeautifulSoup(html, "html.parser")
 
 rss = ET.Element("rss")
