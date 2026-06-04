@@ -46,8 +46,11 @@ for item in soup.select("a.post_item")[:50]:
     ET.SubElement(news, "pubDate").text = formatdate()
 
 tree = ET.ElementTree(rss)
-tree.write(
-    "feed.xml",
+xml_bytes = ET.tostring(
+    rss,
     encoding="utf-8",
     xml_declaration=True
 )
+
+with open("feed.xml", "wb") as f:
+    f.write(xml_bytes)
