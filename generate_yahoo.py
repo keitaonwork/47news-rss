@@ -49,17 +49,11 @@ for item in items[:15]:
     link = item.findtext("link", "")
     pub_date = item.findtext("pubDate", "")
 
-from datetime import datetime, timedelta
-
-try:
-    dt = parsedate_to_datetime(pub_date)
-
-    # UTC → JST
-    dt = dt + timedelta(hours=9)
-
-    date_str = dt.strftime("%m/%d %H:%M")
-except:
-    date_str = ""
+    try:
+        dt = parsedate_to_datetime(pub_date)
+        date_str = dt.strftime("%m/%d %H:%M")
+    except:
+        date_str = ""
 
     html += f"""
     <div class="news">
