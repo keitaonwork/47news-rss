@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from email.utils import formatdate
+from email.utils import format_datetime
 from datetime import datetime
 import xml.etree.ElementTree as ET
 
@@ -40,10 +40,55 @@ for item in soup.select("a.post_item")[:50]:
     ET.SubElement(news, "title").text = title_tag.get_text(strip=True)
     ET.SubElement(news, "link").text = href
 
-    if time_tag:
-        ET.SubElement(news, "description").text = time_tag.get_text(strip=True)
+if time_tag:
+    time_str = time_tag.get_text(strip=True)
 
-    ET.SubElement(news, "pubDate").text = formatdate()
+    ET.SubElement(news, "description").text = time_str
+
+    now = datetime.now()
+
+    try:
+        # 11時35分
+        if "時" in time_str:
+
+            hhmm = (
+                time_str
+                .replace("時", ":")
+                .replace("分", "")
+            )
+
+            article_dt = datetime.strptime(
+                f"{now.strftime('%Y-%m-%d')} {hhmm}",
+                "%Y-%m-%d %H:%M"
+            )
+
+        # 06月03日
+        elif "月" in time_str:
+
+            md = (
+                time_str
+                .replace("月", "/")
+                .replace("日", "")
+            )
+
+            article_dt = datetime.strptime(
+                f"{now.year}/{md}",
+                "%Y/%m/%d"
+            )
+
+        else:
+            article_dt = now
+
+        ET.SubElement(
+            news,
+            "pubDate"
+        ).text = format_datetime(article_dt)
+
+    except Exception:
+        ET.SubElement(
+            news,
+            "pubDate"
+        ).text = format_datetime(now)
 
 tree = ET.ElementTree(rss)
 xml_bytes = ET.tostring(
