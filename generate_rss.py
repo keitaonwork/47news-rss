@@ -78,6 +78,9 @@ for item in soup.select("a.post_item")[:50]:
                     "%Y/%m/%d"
                 )
 
+                jst = timezone(timedelta(hours=9))
+                article_dt = article_dt.replace(tzinfo=jst)
+            
             else:
                 article_dt = now
 
