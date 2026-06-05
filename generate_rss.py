@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from email.utils import format_datetime
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import xml.etree.ElementTree as ET
 
 URL = "https://www.47news.jp/bulletin"
@@ -61,6 +61,9 @@ for item in soup.select("a.post_item")[:50]:
                     f"{now.strftime('%Y-%m-%d')} {hhmm}",
                     "%Y-%m-%d %H:%M"
                 )
+
+                jst = timezone(timedelta(hours=9))
+                article_dt = article_dt.replace(tzinfo=jst)
 
             elif "月" in time_str:
 
