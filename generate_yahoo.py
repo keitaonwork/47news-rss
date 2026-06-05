@@ -42,6 +42,7 @@ a:hover{
 """
 
 from email.utils import parsedate_to_datetime
+from datetime import timedelta
 
 for item in items[:15]:
 
@@ -51,8 +52,13 @@ for item in items[:15]:
 
     try:
         dt = parsedate_to_datetime(pub_date)
+
+        # UTC → JST
+        dt = dt + timedelta(hours=9)
+
         date_str = dt.strftime("%m/%d %H:%M")
-    except:
+
+    except Exception:
         date_str = ""
 
     html += f"""
