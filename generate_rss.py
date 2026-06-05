@@ -40,55 +40,54 @@ for item in soup.select("a.post_item")[:50]:
     ET.SubElement(news, "title").text = title_tag.get_text(strip=True)
     ET.SubElement(news, "link").text = href
 
-if time_tag:
-    time_str = time_tag.get_text(strip=True)
+    # ←ここから全部4スペース右へ！！
+    if time_tag:
+        time_str = time_tag.get_text(strip=True)
 
-    ET.SubElement(news, "description").text = time_str
+        ET.SubElement(news, "description").text = time_str
 
-    now = datetime.now()
+        now = datetime.now()
 
-    try:
-        # 11時35分
-        if "時" in time_str:
+        try:
+            if "時" in time_str:
 
-            hhmm = (
-                time_str
-                .replace("時", ":")
-                .replace("分", "")
-            )
+                hhmm = (
+                    time_str
+                    .replace("時", ":")
+                    .replace("分", "")
+                )
 
-            article_dt = datetime.strptime(
-                f"{now.strftime('%Y-%m-%d')} {hhmm}",
-                "%Y-%m-%d %H:%M"
-            )
+                article_dt = datetime.strptime(
+                    f"{now.strftime('%Y-%m-%d')} {hhmm}",
+                    "%Y-%m-%d %H:%M"
+                )
 
-        # 06月03日
-        elif "月" in time_str:
+            elif "月" in time_str:
 
-            md = (
-                time_str
-                .replace("月", "/")
-                .replace("日", "")
-            )
+                md = (
+                    time_str
+                    .replace("月", "/")
+                    .replace("日", "")
+                )
 
-            article_dt = datetime.strptime(
-                f"{now.year}/{md}",
-                "%Y/%m/%d"
-            )
+                article_dt = datetime.strptime(
+                    f"{now.year}/{md}",
+                    "%Y/%m/%d"
+                )
 
-        else:
-            article_dt = now
+            else:
+                article_dt = now
 
-        ET.SubElement(
-            news,
-            "pubDate"
-        ).text = format_datetime(article_dt)
+            ET.SubElement(
+                news,
+                "pubDate"
+            ).text = format_datetime(article_dt)
 
-    except Exception:
-        ET.SubElement(
-            news,
-            "pubDate"
-        ).text = format_datetime(now)
+        except Exception:
+            ET.SubElement(
+                news,
+                "pubDate"
+            ).text = format_datetime(now)
 
 tree = ET.ElementTree(rss)
 xml_bytes = ET.tostring(
