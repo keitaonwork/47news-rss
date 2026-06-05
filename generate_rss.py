@@ -24,6 +24,9 @@ ET.SubElement(channel, "description").text = "47NEWS速報RSS"
 
 for item in soup.select("a.post_item")[:50]:
 
+    print(item)
+break
+
     title_tag = item.select_one(".item_ttl")
     time_tag = item.select_one(".item_time")
 
