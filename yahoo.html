@@ -1,89 +1,135 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-<meta charset="utf-8">
-<style>
-body{
-    font-family:sans-serif;
-    font-size:14px;
-    margin:0;
-    padding:10px;
-}
-h3{
-    margin-top:0;
-}
-.news{
-    margin-bottom:8px;
-}
-a{
-    text-decoration:none;
-}
-a:hover{
-    text-decoration:underline;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Yahoo!ニュース 主要トピックス</title>
+  <style>
+    /* desknet's側のデザインと完全に統一 */
+    body {
+      font-family: 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: transparent; /* 背景透過 */
+      color: #374151;
+    }
+
+    /* 20件が心地よく収まるスクロールエリア */
+    .news-scroll-box {
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    /* スクロールバーのデザイン（細くオシャレに） */
+    .news-scroll-box::-webkit-scrollbar { width: 6px; }
+    .news-scroll-box::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.02); border-radius: 10px; }
+    .news-scroll-box::-webkit-scrollbar-thumb { background: rgba(2, 132, 199, 0.2); border-radius: 10px; }
+    .news-scroll-box::-webkit-scrollbar-thumb:hover { background: rgba(2, 132, 199, 0.4); }
+
+    /* ニュースリストのスタイル */
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      padding: 9px 4px;
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+      font-size: 13.5px;
+      line-height: 1.4;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    li:last-child {
+      border-bottom: none;
+    }
+
+    /* 更新日時のデザイン（グレーのバッジ風） */
+    .news-date {
+      font-size: 11px;
+      color: #6b7280;
+      background: rgba(0, 0, 0, 0.04);
+      padding: 1px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+      margin-top: 1px;
+    }
+
+    /* 記事リンク（ホバーでブルーに） */
+    a {
+      color: #374151;
+      text-decoration: none;
+      flex: 1;
+      transition: color 0.15s ease;
+    }
+    a:hover {
+      color: #0284c7;
+      text-decoration: underline;
+    }
+
+    .news-loading {
+      font-size: 13px;
+      color: #6b7280;
+      text-align: center;
+      padding: 20px 0;
+    }
+  </style>
 </head>
 <body>
 
-<h3>📰 Yahoo!ニュース</h3>
+  <div class="news-scroll-box">
+    <div id="yahoo-news-content">
+      <div class="news-loading">最新のニュースを読み込み中...</div>
+    </div>
+  </div>
 
+  <script>
+    (async function() {
+      const newsArea = document.getElementById('yahoo-news-content');
+      try {
+        // Yahoo!ニュースの公式RSSを取得
+        const response = await fetch('https://news.yahoo.co.jp/rss/topics/top-picks.xml?_t=' + Date.now());
+        if (!response.ok) throw new Error();
+        const xmlText = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+        const items = xmlDoc.getElementsByTagName('item');
+        
+        let html = '<ul>';
+        const count = Math.min(items.length, 20); // 最大20件
+        
+        for (let i = 0; i < count; i++) {
+          const item = items[i];
+          const title = item.getElementsByTagName('title')[0].textContent;
+          const link = item.getElementsByTagName('link')[0].textContent;
+          
+          // 日付（pubDate）を取得して整形
+          let dateText = '';
+          const pubDateNode = item.getElementsByTagName('pubDate')[0];
+          if (pubDateNode) {
+            const rawDate = new Date(pubDateNode.textContent);
+            if (!isNaN(rawDate.getTime())) {
+              const month = String(rawDate.getMonth() + 1).padStart(2, '0');
+              const day = String(rawDate.getDate()).padStart(2, '0');
+              const hours = String(rawDate.getHours()).padStart(2, '0');
+              const minutes = String(rawDate.getMinutes()).padStart(2, '0');
+              dateText = `${month}/${day} ${hours}:${minutes}`;
+            }
+          }
 
-    <div class="news">
-      <span class="date">06/05 00:26</span>
-      <a href="https://news.yahoo.co.jp/pickup/6583004?source=rss" target="_blank">
-        米政府 キューバ大統領らに制裁
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/05 00:36</span>
-      <a href="https://news.yahoo.co.jp/pickup/6583003?source=rss" target="_blank">
-        米AI計画に日本が800億円拠出へ
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/05 01:54</span>
-      <a href="https://news.yahoo.co.jp/pickup/6583011?source=rss" target="_blank">
-        「マンジャロ」適正使用を 厚労相
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/05 01:45</span>
-      <a href="https://news.yahoo.co.jp/pickup/6583010?source=rss" target="_blank">
-        文春公開の音声 首相「違和感が」
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/04 23:57</span>
-      <a href="https://news.yahoo.co.jp/pickup/6583000?source=rss" target="_blank">
-        A・リュウさんに中国圧力 父訴え
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/05 02:09</span>
-      <a href="https://news.yahoo.co.jp/pickup/6583012?source=rss" target="_blank">
-        免許なく医療行為疑い 書類送検
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/05 01:04</span>
-      <a href="https://news.yahoo.co.jp/pickup/6583006?source=rss" target="_blank">
-        佐藤輝明は別格 MLBスカウト断言
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/05 02:25</span>
-      <a href="https://news.yahoo.co.jp/pickup/6583015?source=rss" target="_blank">
-        モノノ怪の製作統括 声優巡り謝罪
-      </a>
-    </div>
-    
+          html += `
+            <li>
+              ${dateText ? `<span class="news-date">${dateText}</span>` : ''}
+              <a href="${link}" target="_blank" rel="noopener noreferrer">${title}</a>
+            </li>`;
+        }
+        html += '</ul>';
+        newsArea.innerHTML = html;
+      } catch (e) {
+        newsArea.innerHTML = '<div class="news-loading">ニュースの自動取得に失敗しました。</div>';
+      }
+    })();
+  </script>
 </body>
 </html>
