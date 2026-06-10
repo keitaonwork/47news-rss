@@ -1,6 +1,11 @@
 import xml.etree.ElementTree as ET
 import requests
 
+from datetime import datetime, timezone, timedelta
+
+JST = timezone(timedelta(hours=9))
+update_time = datetime.now(JST).strftime("%Y/%m/%d %H:%M")
+
 RSS_URL = "https://news.yahoo.co.jp/rss/topics/top-picks.xml"
 
 rss = requests.get(RSS_URL, timeout=30)
@@ -9,35 +14,41 @@ root = ET.fromstring(rss.content)
 
 items = root.findall(".//item")
 
-html = """
+html = f"""
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <style>
-body{
+body{{
     font-family:sans-serif;
     font-size:14px;
     margin:0;
     padding:10px;
-}
-h3{
+}}
+h3{{
     margin-top:0;
-}
-.news{
+}}
+.update{{
+    color:#666;
+    font-size:12px;
+    margin-bottom:10px;
+}}
+.news{{
     margin-bottom:8px;
-}
-a{
+}}
+a{{
     text-decoration:none;
-}
-a:hover{
+}}
+a:hover{{
     text-decoration:underline;
-}
+}}
 </style>
 </head>
 <body>
 
 <h3>📰 Yahoo!ニュース</h3>
+<div class="update">最終更新: {update_time}</div>
 
 """
 
