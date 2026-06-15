@@ -22,15 +22,6 @@ ET.SubElement(channel, "title").text = "47NEWS速報"
 ET.SubElement(channel, "link").text = URL
 ET.SubElement(channel, "description").text = "47NEWS速報RSS"
 
-from datetime import datetime, timezone, timedelta
-
-jst = timezone(timedelta(hours=9))
-
-ET.SubElement(
-    channel,
-    "lastBuildDate"
-).text = format_datetime(datetime.now(jst))
-
 for item in soup.select("a.post_item")[:50]:
 
     title_tag = item.select_one(".item_ttl")
