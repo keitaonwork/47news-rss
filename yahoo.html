@@ -1,95 +1,128 @@
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <style>
-body{
-    font-family:sans-serif;
-    font-size:14px;
-    margin:0;
-    padding:10px;
-}
-h3{
-    margin-top:0;
-}
-.update{
-    color:#666;
-    font-size:12px;
-    margin-bottom:10px;
-}
-.news{
-    margin-bottom:8px;
-}
-a{
-    text-decoration:none;
-}
-a:hover{
-    text-decoration:underline;
-}
+  /* 外枠をなくし、埋め込みパーツとして最適化 */
+  body {
+    font-family: 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin: 0;
+    color: #374151;
+  }
+
+  /* ヘッダーデザイン */
+  .news-header {
+    font-size: 15px;
+    font-weight: bold;
+    color: #0284c7;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(37, 99, 235, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .header-icon { font-size: 16px; }
+
+  /* 最終更新日時 */
+  .update-time {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-bottom: 6px;
+    text-align: right;
+  }
+
+  /* リスト全体の余白リセット */
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* 行間・上下余白・文字サイズを完全統一 */
+  li {
+    padding: 5px 4px; /* 上下5pxのコンパクト仕様 */
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+    font-size: 13.5px;
+    line-height: 1.3; /* 行間1.3 */
+    display: flex; 
+    align-items: flex-start;
+    gap: 10px;
+  }
+  li:last-child {
+    border-bottom: none;
+  }
+
+  /* 更新日時のデザイン（グレーのバッジ風） */
+  .news-date {
+    font-size: 11px;
+    color: #6b7280;
+    background: rgba(0, 0, 0, 0.04);
+    padding: 1px 6px;
+    border-radius: 4px;
+    white-space: nowrap; 
+    margin-top: 1px;
+  }
+
+  /* 記事リンク */
+  a {
+    color: #374151;
+    text-decoration: none;
+    flex: 1; 
+    transition: color 0.15s ease;
+  }
+  a:hover {
+    color: #0284c7;
+    text-decoration: underline;
+  }
 </style>
 </head>
 <body>
 
-<h3>📰 Yahoo!ニュース</h3>
-<div class="update">最終更新: 2026/06/17 08:50</div>
+<div class="news-header">
+  <span class="header-icon">🔴</span> Yahoo!ニュース トピックス (GitHub連携)
+</div>
 
+<div class="update-time">
+  最終更新: 06/17 10:29
+</div>
 
-    <div class="news">
-      <span class="date">06/17 07:24</span>
-      <a href="https://news.yahoo.co.jp/pickup/6584533?source=rss" target="_blank">
-        原油先物が5%急落 3カ月ぶり安値
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/16 22:46</span>
-      <a href="https://news.yahoo.co.jp/pickup/6584519?source=rss" target="_blank">
-        利上げ 若年層の住宅ローン負担増
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/16 22:58</span>
-      <a href="https://news.yahoo.co.jp/pickup/6584521?source=rss" target="_blank">
-        米イラン合意 ネタニヤフ氏悪夢に
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/17 06:39</span>
-      <a href="https://news.yahoo.co.jp/pickup/6584531?source=rss" target="_blank">
-        高市陣営巡る動画報道 訂正相次ぐ
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/17 07:50</span>
-      <a href="https://news.yahoo.co.jp/pickup/6584537?source=rss" target="_blank">
-        自宅敷地内に突然クマ 男性けが
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/17 07:29</span>
-      <a href="https://news.yahoo.co.jp/pickup/6584536?source=rss" target="_blank">
-        W杯対戦前 サポーターが衝突
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/17 08:20</span>
-      <a href="https://news.yahoo.co.jp/pickup/6584540?source=rss" target="_blank">
-        りくりゅうに関係聞かず 記者語る
-      </a>
-    </div>
-    
-    <div class="news">
-      <span class="date">06/16 22:45</span>
-      <a href="https://news.yahoo.co.jp/pickup/6584520?source=rss" target="_blank">
-        明石家さんま異例弔問 取材応じず
-      </a>
-    </div>
-    
+<ul>
+  <li>
+    <span class="news-date">06/17 01:11</span>
+    <a href="https://news.yahoo.co.jp/pickup/6584553?source=rss" target="_blank" rel="noopener noreferrer">知床沈没事故 社長に禁錮5年判決</a>
+  </li>
+  <li>
+    <span class="news-date">06/16 23:46</span>
+    <a href="https://news.yahoo.co.jp/pickup/6584543?source=rss" target="_blank" rel="noopener noreferrer">ホワイトハウスのイベ巡り5人訴追</a>
+  </li>
+  <li>
+    <span class="news-date">06/17 01:15</span>
+    <a href="https://news.yahoo.co.jp/pickup/6584551?source=rss" target="_blank" rel="noopener noreferrer">スクールバスにはねられ女性重体</a>
+  </li>
+  <li>
+    <span class="news-date">06/16 22:32</span>
+    <a href="https://news.yahoo.co.jp/pickup/6584535?source=rss" target="_blank" rel="noopener noreferrer">ピザハット売却へ 米飲食大手</a>
+  </li>
+  <li>
+    <span class="news-date">06/17 00:29</span>
+    <a href="https://news.yahoo.co.jp/pickup/6584545?source=rss" target="_blank" rel="noopener noreferrer">「モンスト」イベント巡り謝罪</a>
+  </li>
+  <li>
+    <span class="news-date">06/17 00:47</span>
+    <a href="https://news.yahoo.co.jp/pickup/6584547?source=rss" target="_blank" rel="noopener noreferrer">速報アルゼンチンvs.アルジェリア</a>
+  </li>
+  <li>
+    <span class="news-date">06/17 00:49</span>
+    <a href="https://news.yahoo.co.jp/pickup/6584548?source=rss" target="_blank" rel="noopener noreferrer">楽天 吉井理人新監督の就任を発表</a>
+  </li>
+  <li>
+    <span class="news-date">06/16 23:20</span>
+    <a href="https://news.yahoo.co.jp/pickup/6584540?source=rss" target="_blank" rel="noopener noreferrer">りくりゅうに関係聞かず 記者語る</a>
+  </li>
+</ul>
 </body>
 </html>
