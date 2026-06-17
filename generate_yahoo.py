@@ -59,10 +59,10 @@ html = f"""<!DOCTYPE html>
   
   /* 行間・上下余白・文字サイズを完全統一 */
   li {{
-    padding: 5px 4px; /* 上下5pxのコンパクト仕様 */
+    padding: 5px 4px;
     border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
     font-size: 13.5px;
-    line-height: 1.3; /* 行間1.3 */
+    line-height: 1.3;
     display: flex; 
     align-items: flex-start;
     gap: 10px;
@@ -108,20 +108,19 @@ html = f"""<!DOCTYPE html>
 <ul>
 """
 
-# 最大20件（47NEWSと同じ件数）を取得
+# 最大20件を取得
 for item in items[:20]:
     title = item.findtext("title", "")
     link = item.findtext("link", "")
     pub_date = item.findtext("pubDate", "")
 
     try:
+        # Yahoo!の「最初から日本時間」のデータをそのまま正しく解析
         dt = parsedate_to_datetime(pub_date)
-        # Yahoo公式はすでにJST（+0900）で返してくることがあるため、時差変換の重複を防ぎつつ安全にフォーマット
         date_str = dt.strftime("%m/%d %H:%M")
     except Exception:
         date_str = ""
 
-    # 47NEWSと同じ <li> 構造で出力
     html += f"""  <li>
     {f'<span class="news-date">{date_str}</span>' if date_str else ''}
     <a href="{link}" target="_blank" rel="noopener noreferrer">{title}</a>
@@ -135,4 +134,4 @@ html += """</ul>
 
 with open("yahoo.html", "w", encoding="utf-8") as f:
     f.write(html)
-print("yahoo.html を正常に更新しました。")
+print("yahoo.html を正しい時間で更新しました。")
