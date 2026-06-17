@@ -98,7 +98,7 @@ html = f"""<!DOCTYPE html>
 <body>
 
 <div class="news-header">
-  <span class="header-icon">🔴</span> Yahoo!ニュース トピックス (GitHub連携)
+  <span class="header-icon"> Yahoo!ニュース トピックス (GitHub連携)
 </div>
 
 <div class="update-time">
