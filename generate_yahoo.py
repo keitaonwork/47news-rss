@@ -3,6 +3,7 @@ import requests
 from datetime import datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
 
+# 明示的に日本時間（JST）を定義
 JST = timezone(timedelta(hours=9))
 update_time = datetime.now(JST).strftime("%m/%d %H:%M")
 
@@ -54,7 +55,6 @@ html = f"""<!DOCTYPE html>
   ul {{
     list-style: none;
     padding: 0;
-    margin: 0;
   }}
   
   /* 行間・上下余白・文字サイズを完全統一 */
@@ -98,7 +98,7 @@ html = f"""<!DOCTYPE html>
 <body>
 
 <div class="news-header">
-  <span class="header-icon"> Yahoo!ニュース トピックス (GitHub連携)
+  <span class="header-icon">🔴</span> Yahoo!ニュース トピックス (GitHub連携)
 </div>
 
 <div class="update-time">
@@ -115,8 +115,8 @@ for item in items[:20]:
     pub_date = item.findtext("pubDate", "")
 
     try:
-        # Yahoo!の「最初から日本時間」のデータをそのまま正しく解析
-        dt = parsedate_to_datetime(pub_date)
+        # データを解析したあと、明示的に「日本時間（JST）」に出力形式を固定する
+        dt = parsedate_to_datetime(pub_date).astimezone(JST)
         date_str = dt.strftime("%m/%d %H:%M")
     except Exception:
         date_str = ""
@@ -134,4 +134,4 @@ html += """</ul>
 
 with open("yahoo.html", "w", encoding="utf-8") as f:
     f.write(html)
-print("yahoo.html を正しい時間で更新しました。")
+print("yahoo.html を正しい日本時間（JST固定）で更新しました。")
